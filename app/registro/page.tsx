@@ -1,4 +1,4 @@
-import Register from '@/pages/Register'
+import Register from '@/src/pages/Register'
 
 export const metadata = {
 	title: 'Registro de Estudiante',

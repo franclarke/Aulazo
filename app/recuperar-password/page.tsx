@@ -1,4 +1,4 @@
-import ForgotPassword from '@/pages/ForgotPassword'
+import ForgotPassword from '@/src/pages/ForgotPassword'
 
 export const metadata = {
 	title: 'Recuperar Contraseña',

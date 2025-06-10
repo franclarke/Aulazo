@@ -1,4 +1,4 @@
-import About from '@/pages/About'
+import About from '@/src/pages/About'
 
 export const metadata = {
 	title: 'Sobre Nosotros',

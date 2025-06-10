@@ -1,4 +1,4 @@
-import TeacherRegister from '@/pages/TeacherRegister'
+import TeacherRegister from '@/src/pages/TeacherRegister'
 
 export const metadata = {
 	title: 'Registro de Profesor',

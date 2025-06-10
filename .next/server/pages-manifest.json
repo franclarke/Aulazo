@@ -1,1 +1,18 @@
-{}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/About": "pages/About.js",
+  "/Contact": "pages/Contact.js",
+  "/LandingPage": "pages/LandingPage.js",
+  "/ForgotPassword": "pages/ForgotPassword.js",
+  "/PrivacyPolicy": "pages/PrivacyPolicy.js",
+  "/Register": "pages/Register.js",
+  "/StudentDashboard": "pages/StudentDashboard.js",
+  "/TeacherDashboard": "pages/TeacherDashboard.js",
+  "/Login": "pages/Login.js",
+  "/TeacherSearch": "pages/TeacherSearch.js",
+  "/TeacherRegister": "pages/TeacherRegister.js",
+  "/TermsOfService": "pages/TermsOfService.js",
+  "/VirtualClassroom": "pages/VirtualClassroom.js",
+  "/_document": "pages/_document.js"
+}

@@ -1,4 +1,4 @@
-import Login from '@/pages/Login'
+import Login from '@/src/pages/Login'
 
 export const metadata = {
 	title: 'Iniciar Sesión',
