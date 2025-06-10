@@ -2,8 +2,8 @@ import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '@/src/lib/utils'
-import { Button } from '@/src/components/ui/button'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import { 
 	Home, 
 	BookOpen, 
@@ -88,6 +88,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant, user, className }) => 
 	]
 
 	const isActive = (href: string) => {
+		if (!pathname) return false
 		if (href === '/') {
 			return pathname === href
 		}
