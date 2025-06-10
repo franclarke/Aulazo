@@ -7,20 +7,11 @@ import {
 	Star, 
 	Clock, 
 	DollarSign, 
-	BookOpen,
-	MapPin,
-	Award,
 	CheckCircle,
 	Heart,
 	Video,
 	MessageCircle,
-	Calendar,
-	Users,
 	Globe,
-	TrendingUp,
-	Zap,
-	ChevronDown,
-	X,
 	SlidersHorizontal
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -55,7 +46,6 @@ const TeacherSearchClient: React.FC = () => {
 	const [showFilters, setShowFilters] = useState(false)
 	const [sortBy, setSortBy] = useState('relevance')
 	const [favoriteTeachers, setFavoriteTeachers] = useState<string[]>([])
-	const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
 	const subjects = [
 		'Todas las materias', 'Matemáticas', 'Física', 'Química', 'Programación', 

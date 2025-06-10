@@ -50,7 +50,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant, user, className }) => 
 	const pathname = usePathname()
 	const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
 	const [userMenuOpen, setUserMenuOpen] = React.useState(false)
-	const [notifications, setNotifications] = React.useState(3)
+	const [notifications] = React.useState(3)
 
 	const navItems = React.useMemo(() => {
 		const baseItems = [
