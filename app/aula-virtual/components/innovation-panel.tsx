@@ -172,7 +172,7 @@ const InnovationPanel: React.FC<InnovationPanelProps> = ({ currentUser, classNam
 					icon={<Target className="w-3 h-3" />}
 					trend={aiMetrics.focusLevel > 85 ? 'positive' : 'neutral'}
 					animated
-					size="xs"
+					size="sm"
 				/>
 				<MetricCard
 					variant="attention"
@@ -182,7 +182,7 @@ const InnovationPanel: React.FC<InnovationPanelProps> = ({ currentUser, classNam
 					icon={<Brain className="w-3 h-3" />}
 					trend={aiMetrics.comprehension > 80 ? 'positive' : 'neutral'}
 					animated
-					size="xs"
+					size="sm"
 				/>
 				<MetricCard
 					variant="participation"
@@ -192,7 +192,7 @@ const InnovationPanel: React.FC<InnovationPanelProps> = ({ currentUser, classNam
 					icon={<TrendingUp className="w-3 h-3" />}
 					trend="positive"
 					animated
-					size="xs"
+					size="sm"
 				/>
 			</div>
 

@@ -10,7 +10,6 @@ export default tseslint.config(
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
-      'next/core-web-vitals',
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {

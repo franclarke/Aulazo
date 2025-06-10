@@ -286,8 +286,8 @@ const utilityClasses = {
 	},
 }
 
-module.exports = {
+export {
 	designTokens,
 	componentVariants,
 	utilityClasses
-} 
+}
