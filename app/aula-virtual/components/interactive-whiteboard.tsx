@@ -13,10 +13,7 @@ import {
 	Redo, 
 	Download, 
 	Trash2,
-	Palette,
 	MousePointer,
-	Save,
-	Layers,
 	Grid3X3
 } from 'lucide-react'
 
@@ -41,7 +38,7 @@ const InteractiveWhiteboard: React.FC = () => {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
 	const [isDrawing, setIsDrawing] = useState(false)
 	const [currentTool, setCurrentTool] = useState<Tool>('pen')
-	const [currentColor, setCurrentColor] = useState('#3b82f6')
+	const [currentColor, setCurrentColor] = useState('#000000')
 	const [currentThickness, setCurrentThickness] = useState(3)
 	const [elements, setElements] = useState<DrawElement[]>([])
 	const [undoStack, setUndoStack] = useState<DrawElement[][]>([])
@@ -50,11 +47,7 @@ const InteractiveWhiteboard: React.FC = () => {
 	const [currentElement, setCurrentElement] = useState<DrawElement | null>(null)
 	const [showGrid, setShowGrid] = useState(true)
 
-	const colors = [
-		'#3b82f6', '#ef4444', '#10b981', '#f59e0b', 
-		'#8b5cf6', '#f97316', '#06b6d4', '#ec4899',
-		'#64748b', '#1e293b', '#ffffff'
-	]
+	const colors = ['#000000', '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#64748b']
 
 	const saveState = useCallback(() => {
 		setUndoStack(prev => [...prev, elements])
@@ -93,13 +86,12 @@ const InteractiveWhiteboard: React.FC = () => {
 	const drawGrid = useCallback((ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
 		if (!showGrid) return
 		
-		ctx.strokeStyle = '#e2e8f0'
-		ctx.lineWidth = 0.5
-		ctx.setLineDash([2, 2])
+		ctx.strokeStyle = '#f1f5f9'
+		ctx.lineWidth = 1
+		ctx.setLineDash([])
 
 		const gridSize = 20
 		
-		// Vertical lines
 		for (let x = 0; x <= canvas.width; x += gridSize) {
 			ctx.beginPath()
 			ctx.moveTo(x, 0)
@@ -107,15 +99,12 @@ const InteractiveWhiteboard: React.FC = () => {
 			ctx.stroke()
 		}
 		
-		// Horizontal lines
 		for (let y = 0; y <= canvas.height; y += gridSize) {
 			ctx.beginPath()
 			ctx.moveTo(0, y)
 			ctx.lineTo(canvas.width, y)
 			ctx.stroke()
 		}
-		
-		ctx.setLineDash([])
 	}, [showGrid])
 
 	const drawElement = useCallback((ctx: CanvasRenderingContext2D, element: DrawElement) => {
@@ -181,7 +170,6 @@ const InteractiveWhiteboard: React.FC = () => {
 
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
 		
-		// Draw grid first
 		drawGrid(ctx, canvas)
 		
 		elements.forEach(element => {
@@ -278,215 +266,129 @@ const InteractiveWhiteboard: React.FC = () => {
 	}, [redrawCanvas])
 
 	const tools = [
-		{ icon: MousePointer, name: 'select', label: 'Seleccionar', shortcut: 'V' },
-		{ icon: Pen, name: 'pen', label: 'Lápiz', shortcut: 'P' },
-		{ icon: Eraser, name: 'eraser', label: 'Borrador', shortcut: 'E' },
-		{ icon: Minus, name: 'line', label: 'Línea', shortcut: 'L' },
-		{ icon: Square, name: 'rectangle', label: 'Rectángulo', shortcut: 'R' },
-		{ icon: Circle, name: 'circle', label: 'Círculo', shortcut: 'C' },
-		{ icon: Type, name: 'text', label: 'Texto', shortcut: 'T' }
+		{ icon: MousePointer, name: 'select', label: 'Seleccionar' },
+		{ icon: Pen, name: 'pen', label: 'Lápiz' },
+		{ icon: Eraser, name: 'eraser', label: 'Borrador' },
+		{ icon: Minus, name: 'line', label: 'Línea' },
+		{ icon: Square, name: 'rectangle', label: 'Rectángulo' },
+		{ icon: Circle, name: 'circle', label: 'Círculo' },
+		{ icon: Type, name: 'text', label: 'Texto' }
 	]
 
 	return (
-		<div className="h-full flex flex-col bg-white rounded-2xl shadow-xl shadow-slate-900/5 border border-white/50 overflow-hidden">
-			{/* Enhanced Toolbar */}
-			<div className="flex items-center justify-between p-4 border-b border-slate-200/50 bg-gradient-to-r from-white to-slate-50/50">
-				<div className="flex items-center space-x-4">
-					{/* Enhanced Tools */}
-					<div className="flex items-center bg-slate-100/80 rounded-xl p-1 shadow-inner">
-						{tools.map(({ icon: Icon, name, label, shortcut }) => (
+		<div className="h-full flex flex-col bg-white">
+			{/* Minimalist Toolbar */}
+			<div className="flex items-center justify-between p-3 border-b border-slate-200">
+				<div className="flex items-center space-x-3">
+					{/* Tools */}
+					<div className="flex items-center space-x-1">
+						{tools.map(({ icon: Icon, name, label }) => (
 							<Button
 								key={name}
 								variant={currentTool === name ? 'default' : 'ghost'}
 								size="sm"
 								onClick={() => setCurrentTool(name as Tool)}
-								className={`h-10 w-10 p-0 rounded-lg transition-all duration-200 group relative ${
-									currentTool === name 
-										? 'bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/25' 
-										: 'hover:bg-white/80 text-slate-600'
-								}`}
-								title={`${label} (${shortcut})`}
+								className="h-8 w-8 p-0"
+								title={label}
 							>
 								<Icon className="w-4 h-4" />
-								{/* Tooltip */}
-								<div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-									{label} ({shortcut})
-								</div>
 							</Button>
 						))}
 					</div>
 
-					{/* Enhanced Colors */}
-					<div className="flex items-center bg-slate-100/80 rounded-xl p-2 shadow-inner">
-						<div className="flex items-center space-x-1.5">
-							{colors.map(color => (
-								<button
-									key={color}
-									onClick={() => setCurrentColor(color)}
-									className={`w-7 h-7 rounded-lg border-2 transition-all duration-200 hover:scale-110 ${
-										currentColor === color 
-											? 'border-slate-400 shadow-lg' 
-											: 'border-transparent hover:border-slate-300'
-									} ${color === '#ffffff' ? 'border-slate-300' : ''}`}
-									style={{ backgroundColor: color }}
-									title={`Color ${color}`}
-								/>
-							))}
-						</div>
+					{/* Colors */}
+					<div className="flex items-center space-x-1 pl-2 border-l border-slate-200">
+						{colors.map(color => (
+							<button
+								key={color}
+								onClick={() => setCurrentColor(color)}
+								className={`w-6 h-6 rounded border-2 ${
+									currentColor === color ? 'border-slate-400' : 'border-slate-200'
+								}`}
+								style={{ backgroundColor: color }}
+								title={color}
+							/>
+						))}
 					</div>
 
-					{/* Enhanced Thickness Control */}
-					<div className="flex items-center bg-slate-100/80 rounded-xl px-4 py-2 shadow-inner">
-						<span className="text-sm font-medium text-slate-600 mr-3">Grosor:</span>
-						<div className="flex items-center space-x-3">
-							<input
-								type="range"
-								min="1"
-								max="15"
-								value={currentThickness}
-								onChange={(e) => setCurrentThickness(Number(e.target.value))}
-								className="w-20 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider"
-							/>
-							<div className="w-8 h-8 bg-white rounded-lg border border-slate-200 flex items-center justify-center">
-								<span className="text-sm font-semibold text-slate-700">{currentThickness}</span>
-							</div>
-						</div>
+					{/* Thickness */}
+					<div className="flex items-center space-x-2 pl-2 border-l border-slate-200">
+						<span className="text-sm text-slate-600">Grosor:</span>
+						<input
+							type="range"
+							min="1"
+							max="10"
+							value={currentThickness}
+							onChange={(e) => setCurrentThickness(Number(e.target.value))}
+							className="w-16"
+						/>
+						<span className="text-sm text-slate-600 w-4">{currentThickness}</span>
 					</div>
 				</div>
 
 				<div className="flex items-center space-x-2">
-					{/* Enhanced Action Buttons */}
-					<div className="flex items-center bg-slate-100/80 rounded-xl p-1 shadow-inner">
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={undo}
-							disabled={undoStack.length === 0}
-							className="h-9 w-9 p-0 rounded-lg disabled:opacity-30 hover:bg-white/80 text-slate-600"
-							title="Deshacer (Ctrl+Z)"
-						>
-							<Undo className="w-4 h-4" />
-						</Button>
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={redo}
-							disabled={redoStack.length === 0}
-							className="h-9 w-9 p-0 rounded-lg disabled:opacity-30 hover:bg-white/80 text-slate-600"
-							title="Rehacer (Ctrl+Y)"
-						>
-							<Redo className="w-4 h-4" />
-						</Button>
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={() => setShowGrid(!showGrid)}
-							className={`h-9 w-9 p-0 rounded-lg transition-all duration-200 ${
-								showGrid 
-									? 'bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/25' 
-									: 'hover:bg-white/80 text-slate-600'
-							}`}
-							title="Mostrar/Ocultar cuadrícula"
-						>
-							<Grid3X3 className="w-4 h-4" />
-						</Button>
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={clearCanvas}
-							className="h-9 w-9 p-0 rounded-lg hover:bg-red-50 hover:text-red-600 text-slate-600 transition-all duration-200"
-							title="Limpiar pizarra"
-						>
-							<Trash2 className="w-4 h-4" />
-						</Button>
-					</div>
-
-					{/* Enhanced Utility Buttons */}
-					<div className="flex items-center space-x-2">
-						<Button
-							variant="outline"
-							size="sm"
-							onClick={downloadCanvas}
-							className="h-9 px-3 rounded-xl border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-slate-700"
-						>
-							<Download className="w-4 h-4 mr-2" />
-							Descargar
-						</Button>
-						<Button
-							variant="outline"
-							size="sm"
-							className="h-9 px-3 rounded-xl border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-slate-700"
-						>
-							<Save className="w-4 h-4 mr-2" />
-							Guardar
-						</Button>
-					</div>
+					{/* Actions */}
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={undo}
+						disabled={undoStack.length === 0}
+						className="h-8 w-8 p-0"
+						title="Deshacer"
+					>
+						<Undo className="w-4 h-4" />
+					</Button>
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={redo}
+						disabled={redoStack.length === 0}
+						className="h-8 w-8 p-0"
+						title="Rehacer"
+					>
+						<Redo className="w-4 h-4" />
+					</Button>
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={() => setShowGrid(!showGrid)}
+						className={`h-8 w-8 p-0 ${showGrid ? 'bg-slate-100' : ''}`}
+						title="Cuadrícula"
+					>
+						<Grid3X3 className="w-4 h-4" />
+					</Button>
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={clearCanvas}
+						className="h-8 w-8 p-0 text-red-600"
+						title="Limpiar"
+					>
+						<Trash2 className="w-4 h-4" />
+					</Button>
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={downloadCanvas}
+						className="h-8 px-3 text-sm"
+					>
+						<Download className="w-4 h-4 mr-1" />
+						Descargar
+					</Button>
 				</div>
 			</div>
 
-			{/* Enhanced Canvas */}
-			<div className="flex-1 relative bg-gradient-to-br from-white to-slate-50/30 overflow-hidden">
+			{/* Canvas */}
+			<div className="flex-1 relative bg-white overflow-hidden">
 				<canvas
 					ref={canvasRef}
-					className={`absolute inset-0 w-full h-full transition-all duration-200 ${
-						currentTool === 'pen' ? 'cursor-crosshair' :
-						currentTool === 'eraser' ? 'cursor-cell' :
-						currentTool === 'text' ? 'cursor-text' :
-						currentTool === 'select' ? 'cursor-pointer' :
-						'cursor-crosshair'
-					}`}
+					className="absolute inset-0 w-full h-full cursor-crosshair"
 					onMouseDown={handleMouseDown}
 					onMouseMove={handleMouseMove}
 					onMouseUp={handleMouseUp}
 					onMouseLeave={() => setIsDrawing(false)}
 				/>
-				
-				{/* Canvas Overlay Info */}
-				<div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-white/50">
-					<div className="flex items-center space-x-3 text-sm text-slate-600">
-						<div className="flex items-center space-x-1">
-							<Layers className="w-4 h-4" />
-							<span>{elements.length} elementos</span>
-						</div>
-						<div className="w-1 h-1 bg-slate-400 rounded-full" />
-						<div className="flex items-center space-x-1">
-							<Palette className="w-4 h-4" />
-							<div 
-								className="w-4 h-4 rounded border border-slate-300"
-								style={{ backgroundColor: currentColor }}
-							/>
-						</div>
-					</div>
-				</div>
 			</div>
-
-			{/* Custom Slider Styles */}
-			<style jsx>{`
-				.slider::-webkit-slider-thumb {
-					appearance: none;
-					height: 16px;
-					width: 16px;
-					border-radius: 50%;
-					background: #3b82f6;
-					cursor: pointer;
-					box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-				}
-				
-				.slider::-webkit-slider-thumb:hover {
-					background: #2563eb;
-					transform: scale(1.1);
-				}
-				
-				.slider::-moz-range-thumb {
-					height: 16px;
-					width: 16px;
-					border-radius: 50%;
-					background: #3b82f6;
-					cursor: pointer;
-					border: none;
-					box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-				}
-			`}</style>
 		</div>
 	)
 }

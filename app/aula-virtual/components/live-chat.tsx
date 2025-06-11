@@ -7,15 +7,7 @@ import { Input } from '@/components/ui/input'
 import { 
 	Send, 
 	Smile, 
-	Paperclip, 
-	MoreVertical,
-	Check,
-	CheckCheck,
-	Crown,
-	X,
-	Sparkles,
-	Users,
-	MessageCircle
+	Crown
 } from 'lucide-react'
 
 interface ChatMessage {
@@ -26,9 +18,8 @@ interface ChatMessage {
 	userAvatar: string
 	content: string
 	timestamp: Date
-	type: 'text' | 'emoji' | 'file' | 'system'
+	type: 'text' | 'emoji' | 'system'
 	reactions?: Reaction[]
-	isRead?: boolean
 }
 
 interface Reaction {
@@ -48,8 +39,7 @@ const LiveChat: React.FC = () => {
 			content: '¡Bienvenidos a la clase de Matemáticas Avanzadas! Hoy veremos cálculo diferencial.',
 			timestamp: new Date(Date.now() - 300000),
 			type: 'text',
-			reactions: [{ emoji: '👍', count: 3, users: ['student-1', 'student-2', 'student-3'] }],
-			isRead: true
+			reactions: [{ emoji: '👍', count: 3, users: ['student-1', 'student-2', 'student-3'] }]
 		},
 		{
 			id: '2',
@@ -59,8 +49,7 @@ const LiveChat: React.FC = () => {
 			userAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b789?w=40&h=40&fit=crop&crop=face&auto=format',
 			content: 'Buenos días profesora! ¿Podría repetir la explicación sobre límites?',
 			timestamp: new Date(Date.now() - 240000),
-			type: 'text',
-			isRead: true
+			type: 'text'
 		},
 		{
 			id: '3',
@@ -70,9 +59,7 @@ const LiveChat: React.FC = () => {
 			userAvatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=40&h=40&fit=crop&crop=face&auto=format',
 			content: 'Por supuesto Ana, vamos a revisarlo en la pizarra.',
 			timestamp: new Date(Date.now() - 180000),
-			type: 'text',
-			reactions: [{ emoji: '❤️', count: 1, users: ['student-1'] }],
-			isRead: true
+			type: 'text'
 		},
 		{
 			id: '4',
@@ -82,8 +69,7 @@ const LiveChat: React.FC = () => {
 			userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&auto=format',
 			content: '¿Tendremos ejercicios prácticos hoy?',
 			timestamp: new Date(Date.now() - 120000),
-			type: 'text',
-			isRead: true
+			type: 'text'
 		},
 		{
 			id: '5',
@@ -93,14 +79,12 @@ const LiveChat: React.FC = () => {
 			userAvatar: '',
 			content: 'María García se ha unido a la clase',
 			timestamp: new Date(Date.now() - 60000),
-			type: 'system',
-			isRead: true
+			type: 'system'
 		}
 	])
 
 	const [newMessage, setNewMessage] = useState('')
 	const [isTyping, setIsTyping] = useState<string[]>([])
-	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 
@@ -110,8 +94,6 @@ const LiveChat: React.FC = () => {
 		role: 'student' as const,
 		avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format'
 	}), [])
-
-	const emojis = ['👍', '❤️', '😊', '🎉', '👏', '🤔', '😍', '💯', '🔥', '⭐']
 
 	const scrollToBottom = useCallback(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -124,7 +106,7 @@ const LiveChat: React.FC = () => {
 	// Simulate typing indicators
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const shouldShowTyping = Math.random() > 0.8
+			const shouldShowTyping = Math.random() > 0.9
 			if (shouldShowTyping) {
 				const typingUsers = ['Dr. Elena Rodriguez', 'Carlos Martinez', 'Ana López']
 				const randomUser = typingUsers[Math.floor(Math.random() * typingUsers.length)]
@@ -133,56 +115,6 @@ const LiveChat: React.FC = () => {
 				setTimeout(() => {
 					setIsTyping([])
 				}, 2000)
-			}
-		}, 5000)
-
-		return () => clearInterval(interval)
-	}, [])
-
-	// Simulate new messages
-	useEffect(() => {
-		const interval = setInterval(() => {
-			if (Math.random() > 0.7) {
-				const responses = [
-					'Excelente explicación profesora!',
-					'Esto está muy claro, gracias',
-					'¿Podríamos ver otro ejemplo?',
-					'Entendido!',
-					'👍',
-					'Perfecto, ya lo comprendo'
-				]
-
-				const users = [
-					{
-						id: 'student-auto-1',
-						name: 'Carlos Martinez',
-						role: 'student' as const,
-						avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&auto=format'
-					},
-					{
-						id: 'student-auto-2',
-						name: 'María García',
-						role: 'student' as const,
-						avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face&auto=format'
-					}
-				]
-
-				const randomUser = users[Math.floor(Math.random() * users.length)]
-				const randomResponse = responses[Math.floor(Math.random() * responses.length)]
-
-				const newAutoMessage: ChatMessage = {
-					id: Date.now().toString(),
-					userId: randomUser.id,
-					userName: randomUser.name,
-					userRole: randomUser.role,
-					userAvatar: randomUser.avatar,
-					content: randomResponse,
-					timestamp: new Date(),
-					type: randomResponse === '👍' ? 'emoji' : 'text',
-					isRead: false
-				}
-
-				setMessages(prev => [...prev, newAutoMessage])
 			}
 		}, 8000)
 
@@ -200,8 +132,7 @@ const LiveChat: React.FC = () => {
 			userAvatar: currentUser.avatar,
 			content: newMessage.trim(),
 			timestamp: new Date(),
-			type: 'text',
-			isRead: false
+			type: 'text'
 		}
 
 		setMessages(prev => [...prev, message])
@@ -218,7 +149,6 @@ const LiveChat: React.FC = () => {
 					const hasUserReacted = existingReaction.users.includes(currentUser.id)
 					
 					if (hasUserReacted) {
-						// Remove reaction
 						return {
 							...msg,
 							reactions: msg.reactions?.map(r => 
@@ -228,7 +158,6 @@ const LiveChat: React.FC = () => {
 							).filter(r => r.count > 0)
 						}
 					} else {
-						// Add reaction
 						return {
 							...msg,
 							reactions: msg.reactions?.map(r => 
@@ -239,7 +168,6 @@ const LiveChat: React.FC = () => {
 						}
 					}
 				} else {
-					// New reaction
 					return {
 						...msg,
 						reactions: [...(msg.reactions || []), { emoji, count: 1, users: [currentUser.id] }]
@@ -263,99 +191,80 @@ const LiveChat: React.FC = () => {
 
 		if (isSystem) {
 			return (
-				<div className="flex justify-center my-3">
-					<div className="bg-slate-100 text-slate-600 text-xs px-3 py-2 rounded-full border border-slate-200">
-						<div className="flex items-center space-x-2">
-							<Sparkles className="w-3 h-3" />
-							<span>{message.content}</span>
-						</div>
+				<div className="flex justify-center my-2">
+					<div className="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full">
+						{message.content}
 					</div>
 				</div>
 			)
 		}
 
 		return (
-			<div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} mb-4 group`}>
-				<div className={`flex ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'} items-end space-x-2 max-w-[85%]`}>
+			<div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} mb-3 group`}>
+				<div className={`flex ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'} items-start space-x-3 max-w-[80%]`}>
 					{!isCurrentUser && (
-											<Image 
-						src={message.userAvatar}
-						alt={message.userName}
-						width={32}
-						height={32}
-						className="rounded-full border-2 border-white shadow-sm flex-shrink-0"
-					/>
+						<Image 
+							src={message.userAvatar}
+							alt={message.userName}
+							width={32}
+							height={32}
+							className="rounded-full flex-shrink-0"
+						/>
 					)}
 					
 					<div className={`flex flex-col ${isCurrentUser ? 'items-end' : 'items-start'}`}>
 						{!isCurrentUser && (
-							<div className="flex items-center space-x-2 mb-1 px-1">
+							<div className="flex items-center space-x-2 mb-1">
 								{message.userRole === 'teacher' && (
-									<div className="w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center">
-										<Crown className="w-2.5 h-2.5 text-white" />
-									</div>
+									<Crown className="w-3 h-3 text-amber-500" />
 								)}
-								<span className="text-xs font-semibold text-slate-600">
+								<span className="text-xs font-medium text-slate-600">
 									{message.userName}
 								</span>
 							</div>
 						)}
 						
-						<div 
-							className={`px-4 py-3 rounded-2xl text-sm leading-relaxed transition-all duration-200 hover:shadow-sm ${
-								isCurrentUser 
-									? 'bg-blue-500 text-white rounded-br-md' 
-									: message.userRole === 'teacher'
-									? 'bg-amber-50 text-amber-900 border border-amber-200 rounded-bl-md'
-									: 'bg-white text-slate-900 border border-slate-200 rounded-bl-md shadow-sm'
-							}`}
-						>
+						<div className={`px-3 py-2 rounded-lg text-sm ${
+							isCurrentUser 
+								? 'bg-blue-500 text-white' 
+								: message.userRole === 'teacher'
+								? 'bg-amber-50 text-amber-900 border border-amber-200'
+								: 'bg-slate-100 text-slate-900'
+						}`}>
 							{message.content}
 							
-							{/* Enhanced message reactions */}
 							{message.reactions && message.reactions.length > 0 && (
-								<div className="flex flex-wrap gap-1 mt-3 -mb-1">
+								<div className="flex flex-wrap gap-1 mt-2">
 									{message.reactions.map((reaction, index) => (
 										<button
 											key={index}
 											onClick={() => addReaction(message.id, reaction.emoji)}
-											className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs transition-all duration-200 hover:scale-105 ${
+											className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs ${
 												reaction.users.includes(currentUser.id)
-													? 'bg-blue-100 text-blue-600 border border-blue-200'
-													: 'bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200'
+													? 'bg-blue-100 text-blue-600'
+													: 'bg-white text-slate-600 hover:bg-slate-50'
 											}`}
 										>
 											<span>{reaction.emoji}</span>
-											<span className="font-medium">{reaction.count}</span>
+											<span>{reaction.count}</span>
 										</button>
 									))}
 								</div>
 							)}
 						</div>
 						
-						<div className="flex items-center space-x-2 mt-1 px-1">
-							<span className="text-xs text-slate-500">
-								{formatTime(message.timestamp)}
-							</span>
-							{isCurrentUser && (
-								<div className="flex items-center">
-									{message.isRead ? (
-										<CheckCheck className="w-3 h-3 text-blue-500" />
-									) : (
-										<Check className="w-3 h-3 text-slate-400" />
-									)}
-								</div>
-							)}
-						</div>
+						<span className="text-xs text-slate-500 mt-1">
+							{formatTime(message.timestamp)}
+						</span>
 
-						{/* Quick reactions - only show on hover for non-current user messages */}
+						{/* Quick reactions on hover */}
 						{!isCurrentUser && (
-							<div className="flex space-x-1 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+							<div className="flex space-x-1 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
 								{['👍', '❤️', '😊'].map(emoji => (
 									<button
 										key={emoji}
 										onClick={() => addReaction(message.id, emoji)}
-										className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-100 text-sm transition-colors duration-200"
+										className="w-5 h-5 flex items-center justify-center rounded hover:bg-slate-100 text-xs"
 									>
 										{emoji}
 									</button>
@@ -370,83 +279,29 @@ const LiveChat: React.FC = () => {
 
 	return (
 		<div className="h-full flex flex-col bg-white">
-			{/* Enhanced chat header */}
-			<div className="flex items-center justify-between p-4 border-b border-slate-200/60 bg-gradient-to-r from-white to-slate-50/50">
-				<div className="flex items-center space-x-3">
-					<div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
-						<MessageCircle className="w-5 h-5 text-white" />
-					</div>
-					<div>
-						<h3 className="font-bold text-slate-800">Chat en Vivo</h3>
-						<div className="flex items-center space-x-2 text-xs text-slate-500">
-							<div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-							<span>{messages.length} mensajes</span>
-							<div className="w-1 h-1 bg-slate-400 rounded-full" />
-							<Users className="w-3 h-3" />
-							<span>4 participantes</span>
-						</div>
-					</div>
-				</div>
-				<Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-500 hover:text-slate-700">
-					<MoreVertical className="w-4 h-4" />
-				</Button>
-			</div>
-
-			{/* Enhanced messages container */}
-			<div className="flex-1 overflow-y-auto p-4 space-y-1 bg-gradient-to-b from-slate-50/50 to-white">
+			{/* Messages container */}
+			<div className="flex-1 overflow-y-auto p-4 space-y-1">
 				{messages.map((message) => (
 					<MessageComponent key={message.id} message={message} />
 				))}
 				
-				{/* Enhanced typing indicators */}
+				{/* Typing indicators */}
 				{isTyping.length > 0 && (
-					<div className="flex items-center space-x-3 text-slate-500 text-sm px-2 py-3">
+					<div className="flex items-center space-x-2 text-slate-500 text-sm px-2 py-2">
 						<div className="flex space-x-1">
 							<div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" />
 							<div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-75" />
 							<div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-150" />
 						</div>
-						<span className="font-medium">{isTyping.join(', ')}</span>
-						<span>está escribiendo...</span>
+						<span>{isTyping[0]} está escribiendo...</span>
 					</div>
 				)}
 				
 				<div ref={messagesEndRef} />
 			</div>
 
-			{/* Enhanced emoji picker */}
-			{showEmojiPicker && (
-				<div className="p-3 border-t border-slate-200/60 bg-white">
-					<div className="flex items-center justify-between mb-3">
-						<span className="text-sm font-medium text-slate-700">Reacciones rápidas</span>
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={() => setShowEmojiPicker(false)}
-							className="h-6 w-6 p-0 text-slate-500"
-						>
-							<X className="w-4 h-4" />
-						</Button>
-					</div>
-					<div className="grid grid-cols-5 gap-2">
-						{emojis.map((emoji) => (
-							<button
-								key={emoji}
-								onClick={() => {
-									setNewMessage(prev => prev + emoji)
-									setShowEmojiPicker(false)
-								}}
-								className="w-10 h-10 flex items-center justify-center text-lg hover:bg-slate-100 rounded-lg transition-colors duration-200"
-							>
-								{emoji}
-							</button>
-						))}
-					</div>
-				</div>
-			)}
-
-			{/* Enhanced message input */}
-			<div className="p-4 border-t border-slate-200/60 bg-white">
+			{/* Message input */}
+			<div className="p-4 border-t border-slate-200 bg-slate-50">
 				<div className="flex items-center space-x-3">
 					<div className="flex-1 relative">
 						<Input
@@ -455,35 +310,21 @@ const LiveChat: React.FC = () => {
 							onChange={(e) => setNewMessage(e.target.value)}
 							onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
 							placeholder="Escribe tu mensaje..."
-							className="pr-20 text-sm border-slate-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl"
+							className="pr-12 border-slate-200 focus:border-blue-500"
 						/>
-						<div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center space-x-1">
-							<Button 
-								variant="ghost" 
-								size="sm" 
-								className="h-7 w-7 p-0 text-slate-500 hover:text-blue-600 hover:bg-blue-50"
-								onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-							>
-								<Smile className="w-4 h-4" />
-							</Button>
-							<Button 
-								variant="ghost" 
-								size="sm" 
-								className="h-7 w-7 p-0 text-slate-500 hover:text-slate-700 hover:bg-slate-100"
-							>
-								<Paperclip className="w-4 h-4" />
-							</Button>
-						</div>
+						<Button 
+							variant="ghost" 
+							size="sm" 
+							className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 p-0 text-slate-500"
+						>
+							<Smile className="w-4 h-4" />
+						</Button>
 					</div>
 					<Button 
 						onClick={sendMessage}
 						disabled={!newMessage.trim()}
 						size="sm"
-						className={`h-10 w-10 p-0 rounded-xl transition-all duration-200 ${
-							newMessage.trim() 
-								? 'bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/25' 
-								: 'bg-slate-200 text-slate-400 cursor-not-allowed'
-						}`}
+						className="h-9 w-9 p-0"
 					>
 						<Send className="w-4 h-4" />
 					</Button>
