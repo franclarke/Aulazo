@@ -9,15 +9,11 @@ import {
 	MicOff, 
 	Settings, 
 	Users, 
-	Clock,
 	MessageSquare,
 	Share2,
 	LogOut,
 	ChevronUp,
-	ChevronDown,
-	Maximize2,
-	PenTool,
-	Grid3X3
+	ChevronDown
 } from 'lucide-react'
 
 import InteractiveWhiteboard from './interactive-whiteboard'
