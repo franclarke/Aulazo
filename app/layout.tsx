@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
+import Navbar from '@/components/Navbar'
 import './globals.css'
 
 const inter = Inter({
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 				<link rel="mask-icon" href="/favicon.svg" color="#a855f7" />
 			</head>
 			<body className="min-h-screen bg-background font-sans antialiased">
+				<Navbar />
 				{children}
 				<Analytics />
 			</body>
