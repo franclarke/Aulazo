@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Card } from '@/components/ui/card'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { 
 	FileText, 
 	Play, 
 	Download, 
 	BookOpen, 
-	Image, 
+	Image as ImageIcon, 
 	Video,
 	Link,
 	Eye,
@@ -16,12 +16,8 @@ import {
 	Star,
 	MoreVertical,
 	Search,
-	Filter,
-	SortAsc,
 	Calendar,
 	TrendingUp,
-	BarChart3,
-	Heart,
 	Share,
 	ExternalLink,
 	FolderOpen
@@ -138,7 +134,7 @@ const StudyMaterials: React.FC = () => {
 			case 'link':
 				return Link
 			case 'image':
-				return Image
+				return ImageIcon
 			default:
 				return FileText
 		}
@@ -207,10 +203,12 @@ const StudyMaterials: React.FC = () => {
 					<div className="relative h-32 bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
 						{material.thumbnail ? (
 							<div className="relative h-full">
-								<img 
+								<Image 
 									src={material.thumbnail}
 									alt={material.title}
 									className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+									width={128}
+									height={96}
 								/>
 								{material.type === 'video' && (
 									<div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/30 transition-colors">
@@ -332,7 +330,7 @@ const StudyMaterials: React.FC = () => {
 		{ key: 'video', label: 'Videos', icon: Video },
 		{ key: 'presentation', label: 'Presentaciones', icon: BookOpen },
 		{ key: 'link', label: 'Enlaces', icon: Link },
-		{ key: 'image', label: 'Imágenes', icon: Image },
+		{ key: 'image', label: 'Imágenes', icon: ImageIcon },
 		{ key: 'document', label: 'Documentos', icon: FileText }
 	]
 
@@ -374,7 +372,7 @@ const StudyMaterials: React.FC = () => {
 								key={key}
 								variant={filter === key ? 'default' : 'ghost'}
 								size="sm"
-								onClick={() => setFilter(key as any)}
+								onClick={() => setFilter(key as typeof filter)}
 								className={`h-8 px-3 text-xs whitespace-nowrap transition-all duration-200 ${
 									filter === key 
 										? 'bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/25' 

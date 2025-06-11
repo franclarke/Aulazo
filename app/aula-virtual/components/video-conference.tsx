@@ -1,24 +1,20 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { Card } from '@/components/ui/card'
+import React, { useState } from 'react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { 
 	Video, 
 	VideoOff, 
 	Mic, 
 	MicOff, 
-	Volume2, 
-	VolumeX,
 	Maximize2,
-	Settings,
 	Signal,
 	Crown,
-	Phone,
-	Monitor,
 	Users,
 	WifiOff,
-	Wifi
+	Wifi,
+	Monitor
 } from 'lucide-react'
 
 interface Participant {
@@ -113,9 +109,11 @@ const VideoConference: React.FC = () => {
 				{participant.isVideoOn ? (
 					<div className="relative w-full h-full">
 						{/* Enhanced video feed */}
-						<img 
+						<Image 
 							src={participant.avatar}
 							alt={participant.name}
+							width={400}
+							height={300}
 							className="w-full h-full object-cover"
 						/>
 						
@@ -144,9 +142,11 @@ const VideoConference: React.FC = () => {
 				) : (
 					<div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 text-white">
 						<div className="relative mb-4">
-							<img 
+							<Image 
 								src={participant.avatar}
 								alt={participant.name}
+								width={80}
+								height={80}
 								className="w-20 h-20 rounded-full border-4 border-white/20 shadow-xl"
 							/>
 							<div className="absolute -bottom-1 -right-1 w-8 h-8 bg-slate-700 rounded-full border-2 border-slate-600 flex items-center justify-center">

@@ -217,7 +217,7 @@ export default function TeacherDashboardClient() {
 							key={key}
 							variant={activeTab === key ? 'default' : 'ghost'}
 							size="sm"
-							onClick={() => setActiveTab(key as any)}
+							onClick={() => setActiveTab(key as 'overview' | 'earnings')}
 							className={`relative ${
 								activeTab === key
 									? 'bg-white shadow-sm text-blue-600'

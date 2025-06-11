@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import Image from 'next/image'
 
 interface Teacher {
 	id: string
@@ -111,9 +112,9 @@ const TeacherSearchClient: React.FC = () => {
 	}
 
 	const getAvailabilityColor = (availability: string) => {
-		if (availability.includes('ahora')) return 'bg-green-100 text-green-700 border-green-200'
-		if (availability.includes('Hoy')) return 'bg-yellow-100 text-yellow-700 border-yellow-200'
-		return 'bg-gray-100 text-gray-700 border-gray-200'
+		if (availability.includes('ahora')) return 'bg-green-500/10 text-green-700 border-green-300'
+		if (availability.includes('mañana') || availability.includes('2h') || availability.includes('1h')) return 'bg-yellow-500/10 text-yellow-700 border-yellow-300'
+		return 'bg-blue-500/10 text-blue-700 border-blue-300'
 	}
 
 	return (
@@ -145,7 +146,7 @@ const TeacherSearchClient: React.FC = () => {
 								<select
 									value={selectedSubject}
 									onChange={(e) => setSelectedSubject(e.target.value)}
-									className="px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white h-10 text-sm"
+									className="px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white text-neutral-900 h-10 text-sm"
 								>
 									{subjects.map((subject, index) => (
 										<option key={index} value={index === 0 ? 'all' : subject}>
@@ -284,7 +285,7 @@ const TeacherSearchClient: React.FC = () => {
 							<select 
 								value={sortBy}
 								onChange={(e) => setSortBy(e.target.value)}
-								className="px-3 py-1.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-xs"
+								className="px-3 py-1.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white text-neutral-900 text-xs"
 							>
 								<option value="relevance">Más relevantes</option>
 								<option value="rating">Mejor calificados</option>
@@ -302,10 +303,12 @@ const TeacherSearchClient: React.FC = () => {
 										<div className="flex items-start gap-3">
 											{/* Teacher Image - Smaller */}
 											<div className="relative">
-												<img
+												<Image
 													src={teacher.image}
 													alt={teacher.name}
-													className="w-16 h-16 rounded-lg object-cover"
+													width={64}
+													height={64}
+													className="rounded-lg object-cover"
 												/>
 												{teacher.verified && (
 													<div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
@@ -381,7 +384,7 @@ const TeacherSearchClient: React.FC = () => {
 												
 												{/* Availability & Actions - Compact */}
 												<div className="flex items-center justify-between">
-													<Badge className={`text-xs px-2 py-1 ${getAvailabilityColor(teacher.availability)}`}>
+													<Badge className={`text-xs px-2 py-1 border ${getAvailabilityColor(teacher.availability)}`}>
 														{teacher.availability}
 													</Badge>
 													<div className="flex items-center gap-1.5">

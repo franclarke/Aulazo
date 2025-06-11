@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect, useCallback } from 'react'
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { 
 	Video, 
@@ -16,19 +15,12 @@ import {
 	Download,
 	Bell,
 	BellOff,
-	BookOpen,
 	Maximize2,
 	Minimize2,
 	MessageSquare,
 	FolderOpen,
 	PenTool,
 	Grid3X3,
-	Layout,
-	Phone,
-	PhoneOff,
-	Monitor,
-	Volume2,
-	VolumeX,
 	Activity,
 	TrendingUp,
 	Award,
@@ -55,15 +47,6 @@ interface User {
 type ViewMode = 'default' | 'whiteboard-focus' | 'video-focus' | 'materials-focus'
 
 const VirtualClassroomClient: React.FC = () => {
-	const [currentUser] = useState<User>({
-		id: 'student-1',
-		name: 'Ana López',
-		email: 'ana.lopez@student.aulazo.com',
-		role: 'student',
-		avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face&auto=format',
-		isOnline: true
-	})
-	
 	const [otherUsers] = useState<User[]>([
 		{
 			id: 'teacher-1',

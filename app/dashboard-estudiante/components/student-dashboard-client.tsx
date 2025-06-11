@@ -181,7 +181,7 @@ export default function StudentDashboardClient({ data }: StudentDashboardClientP
 							key={key}
 							variant={activeTab === key ? 'default' : 'ghost'}
 							size="sm"
-							onClick={() => setActiveTab(key as any)}
+							onClick={() => setActiveTab(key as 'overview' | 'progress')}
 							className={`relative ${
 								activeTab === key
 									? 'bg-white shadow-sm text-purple-600'

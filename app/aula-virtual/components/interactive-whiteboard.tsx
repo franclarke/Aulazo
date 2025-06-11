@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useRef, useState, useEffect, useCallback } from 'react'
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { 
 	Pen, 
@@ -13,17 +12,11 @@ import {
 	Undo, 
 	Redo, 
 	Download, 
-	Upload, 
 	Trash2,
 	Palette,
 	MousePointer,
-	Move3D,
-	RotateCcw,
 	Save,
-	Image,
 	Layers,
-	ZoomIn,
-	ZoomOut,
 	Grid3X3
 } from 'lucide-react'
 

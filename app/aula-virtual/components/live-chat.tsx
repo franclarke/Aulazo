@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { Card } from '@/components/ui/card'
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { 
@@ -9,13 +9,9 @@ import {
 	Smile, 
 	Paperclip, 
 	MoreVertical,
-	Clock,
 	Check,
 	CheckCheck,
 	Crown,
-	ThumbsUp,
-	Heart,
-	Plus,
 	X,
 	Sparkles,
 	Users,
@@ -108,12 +104,12 @@ const LiveChat: React.FC = () => {
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 
-	const currentUser = {
+	const currentUser = useMemo(() => ({
 		id: 'student-current',
 		name: 'Tu',
 		role: 'student' as const,
 		avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format'
-	}
+	}), [])
 
 	const emojis = ['👍', '❤️', '😊', '🎉', '👏', '🤔', '😍', '💯', '🔥', '⭐']
 
@@ -282,11 +278,13 @@ const LiveChat: React.FC = () => {
 			<div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} mb-4 group`}>
 				<div className={`flex ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'} items-end space-x-2 max-w-[85%]`}>
 					{!isCurrentUser && (
-						<img 
-							src={message.userAvatar}
-							alt={message.userName}
-							className="w-8 h-8 rounded-full border-2 border-white shadow-sm flex-shrink-0"
-						/>
+											<Image 
+						src={message.userAvatar}
+						alt={message.userName}
+						width={32}
+						height={32}
+						className="rounded-full border-2 border-white shadow-sm flex-shrink-0"
+					/>
 					)}
 					
 					<div className={`flex flex-col ${isCurrentUser ? 'items-end' : 'items-start'}`}>
